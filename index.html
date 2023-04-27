@@ -92,13 +92,11 @@
 
 <div class="container">
     <h1>TaskApp</h1>
+    <p id="timer">00:00:00</p>
     <img id="startButton" src="images/startbutton.png" alt="Start" onclick="startTimer()"/>
-    <img id="pauseButton" src="images/pausebutton.png" alt="Pause" onclick="pauseTime()"/>
+    <img id="pauseButton" src="images/pausebutton.png" alt="Pause" onclick="pauseTimer()"/>
     <!--<button id="startButton">Start</button> -->
     <!--<button id="pauseButton">Pause</button> -->
-    <!--input type="button" id="startButton" style="background: url('images/startbutton.png') no-repeat;" onclick="startTimer()"-->
-    <p id="timer">00:00:00</p>
-
     <img id="stopButton" src="images/stopbutton.png" alt="Stop" onclick="stopTimer()"/>
     <!--button id="stopButton">Finish</button>-->
     <img id="clearButton" src="images/clearbutton.png" alt="Clear" />
@@ -120,6 +118,7 @@
     let endTime = null;
     let timerId = null;
     let timelines = [];
+
 /*
     function updateTimer() {//计算经过时间方法
         endTime = new Date();
@@ -177,15 +176,12 @@
         timerId = setInterval(updateTimer1, 10);
     });
     */
+
     function startTimer() {
-        //在开始按钮的处理函数中，我们首先检查开始时间是否为 null，如果是，则将当前时间作为开始时间。
-        //如果不是，则计算出已经经过的时间，并将开始时间更新为当前时间减去已经经过的时间。
         if (startTime === null) {
             startTime = new Date();
             //startButton.src = "images/pausebutton.png";
         } else {
-            //clearInterval(timerId);
-            //endTime = new Date();
             const elapsedTime = (endTime - startTime) / 1000;//经过时间
             startTime = new Date(new Date() - elapsedTime * 1000);
             //startButton.src = "images/startbutton.png";
@@ -193,24 +189,41 @@
             timerId = setInterval(updateTimer, 10);
     }
 
-    function startTimer1() {
-        if (timerId) {
-        clearInterval(timerId);
-        timerId = null;
-        startButton.src = "images/pausebutton.png";
-        }
-            //clearInterval(timerId);
-            //endTime = new Date();
-            startTime = new Date();
-            timerId = setInterval(updateTimer, 10);
-            startButton.src = "images/startbutton.png";
-    };
-
-    function pauseTime() {//在暂停按钮的处理函数中，我们只需要记录下当前时间作为结束时间，并清除定时器即可。
+    function pauseTimer() {//在暂停按钮的处理函数中，我们只需要记录下当前时间作为结束时间，并清除定时器即可。
         endTime = new Date();
         clearInterval(timerId);
         x=1;
     }
+/*
+    function timerControl() {
+        if (startTime === null) {
+            startTime = new Date();
+            startButton.src = "images/pausebutton.png";
+            timerId = setInterval(updateTimer, 10);
+        } else {
+            endTime = new Date();
+            clearInterval(timerId);
+            x = 1;
+            startTime = new Date(new Date() - (endTime - startTime));
+            startButton.src = "images/startbutton.png";
+        }
+    }
+*/
+    /*
+        function startTimer1() {
+            if (timerId) {
+            clearInterval(timerId);
+            timerId = null;
+            startButton.src = "images/pausebutton.png";
+            }
+                //clearInterval(timerId);
+                //endTime = new Date();
+                startTime = new Date();
+                timerId = setInterval(updateTimer, 10);
+                startButton.src = "images/startbutton.png";
+        };
+    */
+
 
     function stopTimer(){
         if (x === 1) {
