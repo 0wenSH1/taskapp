@@ -46,12 +46,20 @@
             display: inline-block;
             border: 1px solid #ddd;
             border-radius: 4px;
-
             transition: 0.3s;
             background-position: bottom 10px right 20px;
-
         }
         #startButton:hover{
+            box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+        }
+        #pauseButton{
+            display: inline-block;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: 0.3s;
+            background-position: bottom 10px right 20px;
+        }
+        #pauseButton:hover{
             box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
         }
         #stopButton{
@@ -84,15 +92,16 @@
 
 <div class="container">
     <h1>TaskApp</h1>
-    <img id="startButton" src="images/startbutton.png" alt="Start" />
+    <img id="startButton" src="images/startbutton.png" alt="Start" onclick="startTimer()"/>
+    <img id="pauseButton" src="images/pausebutton.png" alt="Pause" onclick="pauseTime()"/>
     <!--<button id="startButton">Start</button> -->
     <!--<button id="pauseButton">Pause</button> -->
-
+    <!--input type="button" id="startButton" style="background: url('images/startbutton.png') no-repeat;" onclick="startTimer()"-->
     <p id="timer">00:00:00</p>
 
-    <img id="stopButton" src="images/stopbutton.png" alt="Stop" />
-    <!--<button id="stopButton">Finish</button>-->
-    <img id="clearButton" src="images/clearbutton.png" alt="Stop" />
+    <img id="stopButton" src="images/stopbutton.png" alt="Stop" onclick="stopTimer()"/>
+    <!--button id="stopButton">Finish</button>-->
+    <img id="clearButton" src="images/clearbutton.png" alt="Clear" />
     <!-- <button id="clearButton">Clear Time-slice</button>-->
     <h2>Timeline:</h2>
 </div>
@@ -100,18 +109,18 @@
 
 <script>
     const startButton = document.getElementById("startButton");//获取网页元素
-    const stopButton = document.getElementById("stopButton");
-    // const pauseButton = document.getElementById("pauseButton");
+    //const stopButton = document.getElementById("stopButton");
+    //const pauseButton = document.getElementById("pauseButton");
     const clearButton = document.getElementById("clearButton");
     const timeline = document.getElementById("timeline");
     const timer = document.getElementById("timer");
 
     let startTime = null;//定义全局变量
-    //  let pauseTime = null;
+    //let pauseTime = null;
     let endTime = null;
     let timerId = null;
     let timelines = [];
-
+/*
     function updateTimer() {//计算经过时间方法
         endTime = new Date();
         //endTime = Date.now();
@@ -120,22 +129,20 @@
          , and current time is <strong>${endTime.toLocaleString()}</strong>
          , It has past <strong>${elapsedTime}</strong> seconds`;
     }
-
-    function updateTimer1() {
-        const currentTime = new Date();
-        const timeDiff = currentTime - startTime;
+*/
+    function updateTimer() {
+        endTime = new Date();
+        const elapsedTime = endTime - startTime;
         //const ms = Math.floor((timeDiff % 1000) / 10);
-        const seconds = Math.floor(timeDiff / 1000) % 60;
-        const minutes = Math.floor(timeDiff / 60000) % 60;
-        const hours = Math.floor(timeDiff / 3600000);
-
-        const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:
-         ${seconds.toString().padStart(2, "0")}`;
+        const hours = Math.floor(elapsedTime / 3600000);
+        const minutes = Math.floor(elapsedTime / 60000) % 60;
+        const seconds = Math.floor(elapsedTime / 1000) % 60;
+        const formattedTime = `${hours.toString().padStart(2,"0")}:${minutes.toString().padStart(2,"0")}:
+         ${seconds.toString().padStart(2,"0")}`;
         //const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:
         //${seconds.toString().padStart(2, "0")}.${ms.toString().padStart(2, "0")}`;
         timer.innerHTML = formattedTime;
     }
-
 
     function updateTimeline() {//时间线方法
         timeline.innerHTML = "";//时间线列表默认为空的字符串
@@ -146,61 +153,116 @@
             timeline.appendChild(listItem);//在列表标签timeline中添加列表项，完成时间线
         });
     }
-
+/*
     startButton.addEventListener("click", function () {//鼠标点击事件监听
-        if (timerId) {
-            clearInterval(timerId);
-            timerId = undefined;
-            startButton.src = "images/startbutton.png";
+        //if (timerId) {
+            //clearInterval(timerId);
+            //timerId = undefined;
             //在开始按钮的处理函数中，我们首先检查开始时间是否为 null，如果是，则将当前时间作为开始时间。
             //如果不是，则计算出已经经过的时间，并将开始时间更新为当前时间减去已经经过的时间。
-            //if (startTime === null) {
-            //    startTime = new Date();
-            //    startButton.innerHTML = "Start";
+          if (startTime === null) {
+             startTime = new Date();
+             startButton.src = "images/pausebutton.png";
         } else {
-            //const elapsedTime = (endTime - startTime) / 1000;
-            //startTime = new Date(new Date() - elapsedTime * 1000);
-            startTime = new Date();
-            timerId = setInterval(updateTimer1, 1000);
+             clearInterval(timerId);
+             endTime = new Date();
+             const elapsedTime = (endTime - startTime) / 1000;
+             startTime = new Date(new Date() - elapsedTime * 1000);
+            //startTime = new Date();
+            //timerId = setInterval(updateTimer1, 10);
             //setInterval() 方法每一定时间执行一次函数，类似手表。使用 clearInterval() 来停止执行:
             //clearInterval() 方法可取消由 setInterval() 函数设定的定时执行操作。它的参数必须是由 setInterval() 返回的 ID 值。此处是timerId
-            startButton.src = "images/pausebutton.png";
+             startButton.src = "images/startbutton.png";
         }
-        //timerId = setInterval(updateTimer, 10);
+        timerId = setInterval(updateTimer1, 10);
     });
+    */
+    function startTimer() {
+        //在开始按钮的处理函数中，我们首先检查开始时间是否为 null，如果是，则将当前时间作为开始时间。
+        //如果不是，则计算出已经经过的时间，并将开始时间更新为当前时间减去已经经过的时间。
+        if (startTime === null) {
+            startTime = new Date();
+            //startButton.src = "images/pausebutton.png";
+        } else {
+            //clearInterval(timerId);
+            //endTime = new Date();
+            const elapsedTime = (endTime - startTime) / 1000;//经过时间
+            startTime = new Date(new Date() - elapsedTime * 1000);
+            //startButton.src = "images/startbutton.png";
+        }
+            timerId = setInterval(updateTimer, 10);
+    }
 
-    // pauseButton.addEventListener("click", function () {
-    //在暂停按钮的处理函数中，我们只需要记录下当前时间作为结束时间，并清除定时器即可。
-    //     endTime = new Date();
-    //     clearInterval(timerId);
-    // });
-
-
-    stopButton.addEventListener("click", function () {
+    function startTimer1() {
         if (timerId) {
-            clearInterval(timerId);
-            timerId = undefined;
-            const endTime = new Date();
-            //endTime = Date.now();
+        clearInterval(timerId);
+        timerId = null;
+        startButton.src = "images/pausebutton.png";
+        }
+            //clearInterval(timerId);
+            //endTime = new Date();
+            startTime = new Date();
+            timerId = setInterval(updateTimer, 10);
+            startButton.src = "images/startbutton.png";
+    };
+
+    function pauseTime() {//在暂停按钮的处理函数中，我们只需要记录下当前时间作为结束时间，并清除定时器即可。
+        endTime = new Date();
+        clearInterval(timerId);
+        x=1;
+    }
+
+    function stopTimer(){
+        if (x === 1) {
             const elapsedTime = parseInt((endTime - startTime) / 1000, 10);
             timelines.push(`Started: <strong>${startTime.toLocaleString()}</strong>
              - Ended: <strong>${endTime.toLocaleString()}</strong>
              ,Total spent <strong>${elapsedTime}</strong> seconds`);
-            //push方法允许向数组添加新的元素并返回新的长度；${}允许您在字符串中嵌套变量，而无需使用+操作符进行连接
-            //toLocalString方法返回日期的字符串
-            //startButton.innerHTML = "Start";
-
-        } else {
+        }else if(timerId){
+            clearInterval(timerId);
+            timerId = null;
+            const endTime = new Date();
+            const elapsedTime = parseInt((endTime - startTime) / 1000, 10);
+            timelines.push(`Started: <strong>${startTime.toLocaleString()}</strong>
+             - Ended: <strong>${endTime.toLocaleString()}</strong>
+             ,Total spent <strong>${elapsedTime}</strong> seconds`);
+        } clearInterval(timerId);
+            startTime = null;
+            endTime = null;
+            timer.innerHTML = "00:00:00";
             updateTimeline();
             startButton.src = "images/startbutton.png";
-        }
-    });
+
+    }
 
     clearButton.addEventListener("click", function() {
         timelines = [];
         updateTimeline();
     });
-
+    /*
+        stopButton.addEventListener("click", function () {
+            if (timerId) {
+                clearInterval(timerId);
+                timerId = null;
+                const endTime = new Date();
+                //endTime = Date.now();
+                const elapsedTime = parseInt((endTime - startTime) / 1000, 10);
+                timelines.push(`Started: <strong>${startTime.toLocaleString()}</strong>
+                 - Ended: <strong>${endTime.toLocaleString()}</strong>
+                 ,Total spent <strong>${elapsedTime}</strong> seconds`);
+                //push方法允许向数组添加新的元素并返回新的长度；${}允许您在字符串中嵌套变量，而无需使用+操作符进行连接
+                //toLocalString方法返回日期的字符串
+                //startButton.innerHTML = "Start";
+            } else {
+                updateTimeline();
+                startButton.src = "images/startbutton.png";
+                clearInterval(timerId);
+                startTime = null;
+                endTime = null;
+                timer.innerHTML = "00:00:00";
+            }
+        });
+     */
 </script>
 </body>
 
